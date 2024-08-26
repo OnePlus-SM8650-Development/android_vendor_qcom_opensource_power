@@ -13,7 +13,7 @@ LOCAL_SHARED_LIBRARIES := \
     libbase \
     libutils \
     libbinder_ndk \
-    android.hardware.power-V3-ndk
+    android.hardware.power-V4-ndk
 
 LOCAL_HEADER_LIBRARIES := \
     libhardware_headers
@@ -59,6 +59,12 @@ ifeq ($(call is-board-platform-in-list,sdm845), true)
 LOCAL_SRC_FILES += power-845.c
 endif
 
+ifeq ($(call is-board-platform-in-list,trinket), true)
+LOCAL_SHARED_LIBRARIES := liblog libcutils libdl libxml2
+LOCAL_SRC_FILES := power.c metadata-parser.c utils.c list.c hint-data.c powerhintparser.c
+LOCAL_SRC_FILES += power-6125.c
+endif
+
 endif # End of board specific list
 
 ifneq ($(TARGET_POWERHAL_MODE_EXT),)
@@ -79,6 +85,14 @@ ifeq ($(TARGET_USES_INTERACTION_BOOST),true)
     LOCAL_CFLAGS += -DINTERACTION_BOOST
 endif
 
+
+ifeq ($(call is-board-platform-in-list,trinket), true)
+LOCAL_MODULE := power.qcom
+LOCAL_MODULE_TAGS := optional
+LOCAL_CFLAGS += -Wno-unused-parameter -Wno-unused-variable
+LOCAL_VENDOR_MODULE := true
+include $(BUILD_SHARED_LIBRARY)
+else
 LOCAL_MODULE := android.hardware.power-service-qti
 LOCAL_INIT_RC := android.hardware.power-service-qti.rc
 LOCAL_MODULE_TAGS := optional

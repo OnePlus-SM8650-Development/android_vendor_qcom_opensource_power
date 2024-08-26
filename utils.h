@@ -27,6 +27,13 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef __UTILS_H__
+#define __UTILS_H__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <cutils/properties.h>
 
 typedef struct {
@@ -53,3 +60,9 @@ long long calc_timespan_us(struct timespec start, struct timespec end);
 int get_soc_id(void);
 
 PropVal perf_get_property(const char* prop, const char* def_val);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif //__UTILS_H__
